@@ -1,0 +1,50 @@
+
+require(xlsx)
+require(haplo.stats)
+require(genetics)
+require(LDheatmap)
+setwd("D:/Paulo/139_17")
+#transformar os dados em 0 1 2 sendo 2 o menor alelo
+dados<-read.xlsx("Analises139_17.xlsx", sheetName="R")
+attach(dados)
+dados
+geno1<-geno1to2(dados)
+geno1
+geno.desc <- summaryGeno(geno1, miss.val=c(0,NA))
+print(geno.desc)
+
+#dados2 <- sqlFetch(xlscon, "R2")  
+
+geno <- dados  
+geno
+geno1<-geno1to2(geno)
+geno1
+geno.desc <- summaryGeno(geno1, miss.val=c(0,NA))
+print(geno.desc)
+save.em <- haplo.em(geno=geno1, miss.val=c(0,NA))
+print(save.em)
+
+#------------------------------------#
+#------DESEQUÍLIBRIO DE LIGAÇÃO------#
+#------------------------------------#
+
+dados<-read.xlsx("Analises139_17.xlsx", sheetName="R_LD")
+attach(dados)
+dados
+dados<-makeGenotypes(dados)
+ldt <- LD(dados)
+ldt
+LDtable(ldt)
+LDplot(ldt)
+
+summary(ldt, digits = 3)
+
+
+#------------------------------------#
+#---------------GRÁFICO--------------#
+#------------------------------------#
+
+
+mapa1 <- LDheatmap(dados, flip=T, color = grey.colors(5))
+ 
+
